@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "production": "eko-player-prod",
+    "staging": "eko-player-stage",
+  }
+}

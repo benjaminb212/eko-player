@@ -1,6 +1,6 @@
 export default function Player(props) {
     return (
-        <video autoPlay>
+        <video controls autoPlay>
             {/*Safari / iOS, IE9*/}
             <source
                 src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"

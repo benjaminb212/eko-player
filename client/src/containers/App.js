@@ -1,5 +1,6 @@
 import { Player } from '../components';
 import Social from './Social';
+
 function App() {
     return (
         <div className="App">
