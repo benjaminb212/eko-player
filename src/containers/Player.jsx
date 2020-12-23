@@ -47,9 +47,15 @@ export default function Player() {
         [player]
     );
 
+    const handleStop = React.useCallback(() => {
+            player.current.pause();
+            player.current.currentTime = 0;
+            setIsPlaying(false);
+    }, [setIsPlaying]);
+
     return (
         <div>
-            <video className={styles.player} ref={player}>
+            <video ref={player} className={styles.player}>
                 {/*Safari / iOS, IE9*/}
                 <source
                     src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
@@ -68,6 +74,7 @@ export default function Player() {
             </video>
             <Controls
                 isPlaying={isPlaying}
+                onStop={handleStop}
                 onPlayPause={handlePlayPause}
                 onForward={handleForward}
                 onChangeTimeline={handleChangeTimeline}
