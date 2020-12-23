@@ -6,7 +6,7 @@ export default function Social() {
     //Get the views & votes from DB
 
     return (
-        <div className="social">
+        <div className={styles.social}>
             <Views />
             <Votes />
         </div>

@@ -12,10 +12,10 @@ export default function Controls({
     //Get the time from db
     return (
         <div className={styles.controls}>
-            <Forward handleForward={onForward} />
-            <Rewind handleRewind={onRewind} />
             <PlayPause isPlaying={isPlaying} handlePlayPause={onPlayPause} />
             <Timeline handleChangeTimeline={onChangeTimeline} />
+            <Forward handleForward={onForward} />
+            <Rewind handleRewind={onRewind} />
         </div>
     );
 }

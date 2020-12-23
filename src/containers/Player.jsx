@@ -48,8 +48,8 @@ export default function Player() {
     );
 
     return (
-        <div className={styles.player}>
-            <video ref={player}>
+        <div>
+            <video className={styles.player} ref={player}>
                 {/*Safari / iOS, IE9*/}
                 <source
                     src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
