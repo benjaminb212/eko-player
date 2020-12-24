@@ -9,8 +9,7 @@ export default function Controls({
     onChangeTimeline,
     onRewind,
     onStop,
-    currentTime,
-    duration,
+    timeline,
 }) {
     //Get the time from db
     return (
@@ -18,8 +17,8 @@ export default function Controls({
             <Stop handleStop={onStop} />
             <PlayPause isPlaying={isPlaying} handlePlayPause={onPlayPause} />
             <Timeline
-                currentTime={currentTime}
-                duration={duration}
+                currentTime={timeline.currentTime}
+                duration={timeline.duration}
                 handleChangeTimeline={onChangeTimeline}
             />
             <Rewind handleRewind={onRewind} />

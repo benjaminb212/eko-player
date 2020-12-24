@@ -10,7 +10,7 @@
     position: relative;
 }
 
-.timeline div {
+.duration {
     position: absolute;
     background-color: white;
     left: 0;
@@ -20,7 +20,7 @@
     z-index: 2;
 }
 
-.timeline span {
+.currentTime {
     position: absolute;
     z-index: 3;
     left: 19px;

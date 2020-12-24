@@ -7,7 +7,10 @@ export default function Player() {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [isForward, setIsForward] = React.useState(false);
     const [isRewind, setIsRewind] = React.useState(false);
-    const [timeline, setTimeline] = React.useState({currentTime: 0, duration: null});
+    const [timeline, setTimeline] = React.useState({
+        currentTime: '00:00',
+        duration: 0,
+    });
     const player = React.useRef();
     const intervalFwd = React.useRef();
     const intervalRwd = React.useRef();
@@ -16,7 +19,11 @@ export default function Player() {
         function onLoad() {
             player.current.addEventListener('timeupdate', handleTimeUpdate);
             player.current.addEventListener('ended', handleStop);
-            console.log(player.current.duration)
+            console.log('player.current.duration: ', player.current.duration);
+            console.log(
+                'player.current.currentTime: ',
+                player.current.currentTime
+            );
             setTimeline({
                 currentTime: player.current.currentTime,
                 duration: player.current.duration,
@@ -44,19 +51,20 @@ export default function Player() {
             secondValue = seconds;
         }
 
-        // let mediaTime = minuteValue + ':' + secondValue;
-        // timer.textContent = mediaTime;
+        let time = minuteValue + ':' + secondValue;
 
-        // let barLength =
-        //     timerWrapper.clientWidth * (player.current.currentTime / player.current.duration);
-        // timerBar.style.width = barLength + 'px';
-    });
+        setTimeline({ currentTimr: time });
+    }, [player]);
 
     const handleStop = React.useCallback(() => {
         player.current.pause();
         player.current.currentTime = 0;
         setIsPlaying(false);
-    }, [setIsPlaying]);
+        setIsRewind(false);
+        setIsForward(false);
+        clearInterval(intervalRwd);
+        clearInterval(intervalFwd);
+    }, [player]);
 
     const rewind = React.useCallback(() => {
         if (player.current.currentTime <= 3) {
@@ -80,20 +88,17 @@ export default function Player() {
 
     const handlePlayPause = React.useCallback(() => {
 
-        if (isForward) {
-            handleForward();
-            return;
-        }
-
-        if (isRewind) {
-            handleRewind();
-            return;
-        }
 
         if (isPlaying) {
             player.current.pause();
         } else {
-            player.current.play();
+            if (isForward) {
+                handleForward();
+            } else if (isRewind) {
+                handleRewind();
+            } else {
+                player.current.play();
+            }
         }
 
         setIsPlaying(!isPlaying);
@@ -113,14 +118,14 @@ export default function Player() {
         clearInterval(intervalFwd.current);
         setIsForward(false);
         if (isRewind) {
-            setIsRewind(false);
             clearInterval(intervalRwd.current);
-            setIsPlaying(true);
+            setIsRewind(false);
             player.current.play();
+            setIsPlaying(true);
         } else {
             setIsRewind(true);
-            setIsPlaying(false);
             player.current.pause();
+            setIsPlaying(false);
             intervalRwd.current = setInterval(rewind, 200);
         }
     }, [isRewind, rewind]);
@@ -129,14 +134,14 @@ export default function Player() {
         clearInterval(intervalRwd.current);
         setIsRewind(false);
         if (isForward) {
-            setIsForward(false);
             clearInterval(intervalFwd.current);
-            setIsPlaying(true);
+            setIsForward(false);
             player.current.play();
+            setIsPlaying(true);
         } else {
             setIsForward(true);
-            setIsPlaying(false);
             player.current.pause();
+            setIsPlaying(false);
             intervalFwd.current = setInterval(forward, 200);
         }
     }, [isForward, forward]);
@@ -163,8 +168,7 @@ export default function Player() {
             </video>
             <Controls
                 isPlaying={isPlaying}
-                currentTime={timeline.currentTime}
-                duration={timeline.duration}
+                timeline={timeline}
                 onStop={handleStop}
                 onPlayPause={handlePlayPause}
                 onForward={handleForward}
