@@ -13,11 +13,11 @@ export default function Controls({
     //Get the time from db
     return (
         <div className={styles.controls}>
+            <Stop handleStop={onStop} />
             <PlayPause isPlaying={isPlaying} handlePlayPause={onPlayPause} />
-            <Stop  handleStop={onStop} />
             <Timeline handleChangeTimeline={onChangeTimeline} />
-            <Forward handleForward={onForward} />
             <Rewind handleRewind={onRewind} />
+            <Forward handleForward={onForward} />
         </div>
     );
 }

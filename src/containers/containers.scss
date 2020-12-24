@@ -1,37 +1,26 @@
 .controls {
-    // visibility: hidden;
-    opacity: 0.5;
-    width: 400px;
-    border-radius: 10px;
+    opacity: 1;
+    width: 100%;
     position: absolute;
     bottom: 20px;
-    left: 50%;
-    margin-left: -200px;
-    background-color: black;
-    box-shadow: 3px 3px 5px black;
-    transition: 1s all;
+    left: auto;
     display: flex;
-
-    :hover {
-        visibility: visible;
-        opacity: 1;
-    }
 }
 
 .player {
+    position: absolute;
     width: 100%;
-    display: flex;
-    margin: 3% 0% 3% 0%;
+}
 
-    :hover {
-        opacity: 1;
-    }
-
-    :focus {
-        opacity: 1;
-    }
+.video {
+    width: 100%;
 }
 
 .social {
+    width: 100%;
     position: absolute;
+}
+
+.container {
+    top: 50%;
 }

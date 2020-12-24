@@ -1,14 +1,15 @@
 import React from 'react';
 import * as styles from './Buttons.scss';
+import Triangle from 'assets/Triangle.png';
+import X from 'assets/X.png';
+
 export default function PlayPause({ isPlaying, handlePlayPause }) {
     return (
-        <button
+        <img
             onClick={handlePlayPause}
-            className={styles.play}
-            data-icon="P"
-            aria-label="play pause toggle"
-        >
-            {isPlaying ? 'PAUSE' : 'PLAY'}
-        </button>
+            className={!isPlaying && styles.play}
+            src={isPlaying ? X : Triangle}
+            alt="Logo"
+        />
     );
 }

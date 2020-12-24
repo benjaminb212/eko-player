@@ -26,36 +26,29 @@ export default function Player() {
         [player]
     );
 
-    const handleRewind = React.useCallback(
-        (seconds) => {
-            return () => {
-                player.current.pause();
-                player.current.replay(seconds);
-                console.log(player.current.currentTime);
-            };
-        },
-        [player]
-    );
-    const handleForward = React.useCallback(
-        (seconds) => {
-            return () => {
-                player.current.pause();
-                player.current.forward(seconds);
-                console.log(player.current.currentTime);
-            };
-        },
-        [player]
-    );
+    const handleRewind = React.useCallback(() => {
+
+        console.log('handleRewind');
+        player.current.replay(10000);
+        console.log(player.current.currentTime);
+    }, []);
+    const handleForward = React.useCallback(() => {
+
+        console.log('handleForward');
+        player.current.forward(10000);
+        console.log(player.current.currentTime);
+    }, []);
 
     const handleStop = React.useCallback(() => {
-            player.current.pause();
-            player.current.currentTime = 0;
-            setIsPlaying(false);
+        player.current.pause();
+        player.current.currentTime = 0;
+        setIsPlaying(false);
     }, [setIsPlaying]);
 
     return (
-        <div>
-            <video ref={player} className={styles.player}>
+        <div className={styles.player}>
+            <Social />
+            <video ref={player} className={styles.video}>
                 {/*Safari / iOS, IE9*/}
                 <source
                     src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
@@ -73,6 +66,7 @@ export default function Player() {
                 />
             </video>
             <Controls
+
                 isPlaying={isPlaying}
                 onStop={handleStop}
                 onPlayPause={handlePlayPause}
@@ -80,7 +74,7 @@ export default function Player() {
                 onChangeTimeline={handleChangeTimeline}
                 onRewind={handleRewind}
             />
-            <Social />
+
         </div>
     );
 }

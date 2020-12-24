@@ -1,8 +1,10 @@
 .timeline {
+    height: 55px;
+    width: 100%;
     line-height: 38px;
     font-size: 10px;
     font-family: monospace;
-    text-shadow: 1px 1px 0px black;
+    text-shadow: 1px 1px 0px white;
     color: white;
     flex: 5;
     position: relative;
@@ -10,11 +12,11 @@
 
 .timeline div {
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: white;
     left: 0;
     top: 0;
     width: 0;
-    height: 38px;
+    height: 55px;
     z-index: 2;
 }
 
@@ -25,8 +27,9 @@
 }
 button,
 .timeline {
-    height: 38px;
-    line-height: 19px;
-    box-shadow: inset 0 -5px 25px rgba(0, 0, 0, 0.3);
-    border-right: 1px solid #333;
+    cursor: pointer;
+    line-height: 20px;
+    align-self: center;
+    height: 55px;
+    box-shadow: inset 0 -3px 8px white;
 }

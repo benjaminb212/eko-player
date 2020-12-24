@@ -16,6 +16,18 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.svg$/,
+                use: ['@svgr/webpack'],
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                    },
+                ],
+            },
+            {
                 test: /\.(js|jsx)$/,
                 include: path.resolve(__dirname, 'src'),
                 exclude: /node_modules/,
@@ -64,6 +76,11 @@ module.exports = {
     },
     resolve: {
         extensions: ['*', '.js', '.jsx', '.scss'],
+        alias: {
+            assets: path.resolve(__dirname, 'src/assets/'),
+            components: path.resolve(__dirname, 'src/components/'),
+            containers: path.resolve(__dirname, 'src/containers/'),
+        },
     },
     output: {
         path: path.resolve(__dirname, './dist'),

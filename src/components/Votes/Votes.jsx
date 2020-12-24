@@ -1,10 +1,12 @@
 import React from 'react';
+import { Like, Dislike } from 'components/Buttons';
+import * as styles from './Votes.scss';
 
-export default function Votes(props) {
+export default function Votes({handleLike, handleDislike}) {
     return (
-        <div className="voteContainer">
-            <button id="thumbsUp">thumbsUp: 0</button>
-            <button id="thumbsDown">thumbsDown: 0</button>
+        <div className={styles.votes}>
+            <Like handleLike={handleLike} />
+            <Dislike handleDislike={handleDislike} />
         </div>
     );
 }

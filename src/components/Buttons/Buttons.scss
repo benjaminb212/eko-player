@@ -1,53 +1,43 @@
-button:hover,
-button:focus {
-    box-shadow: inset 1px 1px 2px black;
-}
-
-button:active {
-    box-shadow: inset 3px 3px 2px black;
-}
-
-.active:before {
-    color: red;
-}
-
-button,
-.controls {
-    background: linear-gradient(to bottom, #222, #666);
-}
-
-button:before {
-    font-family: HeydingsControlsRegular;
-    font-size: 20px;
-    position: relative;
-    content: attr(data-icon);
-    color: #aaa;
-    text-shadow: 1px 1px 0px black;
-}
-
-button {
+img {
     position: relative;
     border: 0;
-    flex: 1;
-    outline: none;
+    width: 55px;
+    height: 55px;
+    opacity: 0.5;
+    transition: 0.6s all;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .play {
-    border-radius: 10px 0 0 10px;
+    transform: rotate(90deg);
 }
 
-.play:before {
-    font-size: 22px;
+.like {
+    opacity: 0.5;
+    transition: 0.6s all;
+    height: auto;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+
+    &:hover {
+        opacity: 1;
+    }
 }
 
-.fwd {
-    border-radius: 0 10px 10px 0;
-}
+.dislike {
+    opacity: 0.5;
+    transition: 0.6s all;
+    height: auto;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
 
-.rwd {
-    border-radius: 0 10px 10px 0;
-}
-
-.stop {
-    border-radius: 0 10px 10px 0;
+    &:hover {
+        opacity: 1;
+    }
 }

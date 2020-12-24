@@ -1,15 +1,14 @@
 import React from 'react';
+import Circle from 'assets/Circle.png';
 import * as styles from './Buttons.scss';
 
 export default function Rewind({ handleRewind }) {
     return (
-        <button
+        <img
             onClick={handleRewind}
             className={styles.rwd}
-            data-icon="B"
-            aria-label="rewind"
-        >
-            RWD
-        </button>
+            src={Circle}
+            alt="Logo"
+        />
     );
 }
