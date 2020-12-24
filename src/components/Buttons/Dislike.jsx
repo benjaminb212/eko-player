@@ -1,5 +1,5 @@
-import BrokenHeart from 'assets/BrokenHeart.svg';
 import React from 'react';
+import Unlike from 'assets/Unlike.svg';
 import * as styles from './Buttons.scss';
 
 export default function Dislike({ handleDislike }) {
@@ -7,6 +7,6 @@ export default function Dislike({ handleDislike }) {
         <button
             onClick={handleDislike}
             className={styles.dislike}
-        ><BrokenHeart /></button>
+        ><Unlike /></button>
     );
 }

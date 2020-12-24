@@ -8,14 +8,20 @@ export default function Controls({
     onForward,
     onChangeTimeline,
     onRewind,
-    onStop
+    onStop,
+    currentTime,
+    duration,
 }) {
     //Get the time from db
     return (
         <div className={styles.controls}>
             <Stop handleStop={onStop} />
             <PlayPause isPlaying={isPlaying} handlePlayPause={onPlayPause} />
-            <Timeline handleChangeTimeline={onChangeTimeline} />
+            <Timeline
+                currentTime={currentTime}
+                duration={duration}
+                handleChangeTimeline={onChangeTimeline}
+            />
             <Rewind handleRewind={onRewind} />
             <Forward handleForward={onForward} />
         </div>

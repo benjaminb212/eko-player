@@ -1,11 +1,11 @@
 import React from 'react';
-import Heart from 'assets/Heart.svg';
+import Claps from 'assets/Claps.svg';
 import * as styles from './Buttons.scss';
 
 export default function Like({ handleLike }) {
     return (
         <button onClick={handleLike} className={styles.like}>
-            <Heart />
+            <Claps />
         </button>
     );
 }
