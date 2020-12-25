@@ -1,15 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as styles from './Timeline.scss';
 
 export default function Timeline({ currentTime, duration }) {
     const [length, setLength] = React.useState(0);
     const durationRef = React.useRef();
 
-    // useLayoutEffect(() => {
-    //   if (divRef.current.clientWidth > 1000) {
-    //     setZoom(1.5)
-    //   }
-    // }, []);
     React.useEffect(() => {
         const length =
             durationRef.current.clientWidth * (currentTime / duration);

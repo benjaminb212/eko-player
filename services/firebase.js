@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-const firebaseConfigStage = {
+const firebaseConfigDev = {
     apiKey: 'AIzaSyBA13tU21Yy6PthRGyVx2-1Rv3lsSgGbNQ',
     authDomain: 'eko-player-stage.firebaseapp.com',
     databaseURL: 'https://eko-player-stage-default-rtdb.firebaseio.com',
@@ -17,5 +17,5 @@ const firebaseConfigStage = {
 //     appId: '1:999690120952:web:90602ba3ee48d1cb9d950d',
 // };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfigStage);
+firebase.initializeApp(firebaseConfigDev);
 export default firebase;

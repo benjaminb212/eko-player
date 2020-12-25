@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Social from './Social';
 import Controls from './Controls';
+import firebase from 'services/firebase';
 import * as styles from './containers.scss';
 
 export default function Player() {
@@ -17,8 +18,11 @@ export default function Player() {
 
     useEffect(() => {
         function onLoad() {
+            // Handling time elapsed
             player.current.addEventListener('timeupdate', handleTimeUpdate);
+            // Reset the video if ended
             player.current.addEventListener('ended', handleStop);
+            player.current.addEventListener('ended', handleViewed);
             console.log('player.current.duration: ', player.current.duration);
             console.log(
                 'player.current.currentTime: ',
@@ -31,7 +35,20 @@ export default function Player() {
         }
 
         onLoad();
-    }, [handlePlayPause, handleStop, handleTimeUpdate]);
+    }, [handleStop, handleTimeUpdate]);
+
+    // A video considered as viewed if a user has ended the video to its end
+    const handleViewed = React.useCallback(() => {
+        const viewsRef = firebase.database().ref();
+        firebase
+            .database()
+            .ref('views')
+            .once('value')
+            .then((snapshot) => {
+                console.log('WOW:', snapshot.val());
+                viewsRef.update({ views: snapshot.val() + 1 });
+            });
+    }, []);
 
     const handleTimeUpdate = React.useCallback(() => {
         const minutes = Math.floor(player.current.currentTime / 60);
@@ -87,8 +104,6 @@ export default function Player() {
     }, [handleStop]);
 
     const handlePlayPause = React.useCallback(() => {
-
-
         if (isPlaying) {
             player.current.pause();
         } else {
@@ -102,7 +117,7 @@ export default function Player() {
         }
 
         setIsPlaying(!isPlaying);
-    }, [isPlaying]);
+    }, [isPlaying, handleForward, isForward, handleRewind, isRewind]);
 
     const handleChangeTimeline = React.useCallback(
         (seconds) => {

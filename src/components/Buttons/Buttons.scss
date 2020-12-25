@@ -23,9 +23,15 @@ img {
     background-color: transparent;
     border: none;
     box-shadow: none;
+    z-index: 1;
+    cursor: pointer;
 
     &:hover {
         opacity: 1;
+    }
+
+    &:active {
+        fill: greenyellow;
     }
 }
 
@@ -36,8 +42,13 @@ img {
     background-color: transparent;
     border: none;
     box-shadow: none;
+    z-index: 1;
+    cursor: pointer;
 
     &:hover {
         opacity: 1;
+    }
+    &:active {
+        fill: red;
     }
 }
