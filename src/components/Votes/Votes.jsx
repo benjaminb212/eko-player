@@ -3,9 +3,7 @@ import { Like, Dislike } from 'components/Buttons';
 import firebase from 'services/firebase';
 import * as styles from './Votes.scss';
 
-/**
- *  A video votes are measured by users "claps" or "boos"
- *  */
+// A video votes are measured by users "claps" or "boos"
 export default function Votes() {
     const [votes, setVotes] = React.useState([]);
 

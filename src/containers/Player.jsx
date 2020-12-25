@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Social from './Social';
 import Controls from './Controls';
 import firebase from 'services/firebase';
@@ -9,69 +9,53 @@ export default function Player() {
     const [isForward, setIsForward] = React.useState(false);
     const [isRewind, setIsRewind] = React.useState(false);
     const [timeline, setTimeline] = React.useState({
-        currentTime: '00:00',
-        duration: 0,
+        currentTime: null,
+        duration: null,
     });
     const player = React.useRef();
     const intervalFwd = React.useRef();
     const intervalRwd = React.useRef();
 
-    useEffect(() => {
-        function onLoad() {
-            // Handling time elapsed
-            player.current.addEventListener('timeupdate', handleTimeUpdate);
-            // Reset the video if ended
-            player.current.addEventListener('ended', handleStop);
-            player.current.addEventListener('ended', handleViewed);
-            console.log('player.current.duration: ', player.current.duration);
-            console.log(
-                'player.current.currentTime: ',
-                player.current.currentTime
-            );
-            setTimeline({
-                currentTime: player.current.currentTime,
-                duration: player.current.duration,
-            });
-        }
+    React.useEffect(() => {
+        // Loading video metadata
+        player.current.addEventListener('loadedmetadata', handleLoadedMetaData);
+        // Handling time elapsed
+        player.current.addEventListener('timeupdate', handleTimeUpdate);
+        // Reset the video when ended
+        player.current.addEventListener('ended', handleStop);
+        // Mark the video as viewed when ended
+        player.current.addEventListener('ended', handleMarkAsViewed);
+    }, [
+        player,
+        handleLoadedMetaData,
+        handleStop,
+        handleTimeUpdate,
+        handleMarkAsViewed,
+    ]);
 
-        onLoad();
-    }, [handleStop, handleTimeUpdate]);
+    // Handling current video timer & duration properties
+    const handleLoadedMetaData = React.useCallback(() => {
+        setTimeline({
+            currentTime: player.current.currentTime,
+            duration: player.current.duration,
+        });
+    }, [player]);
 
     // A video considered as viewed if a user has ended the video to its end
-    const handleViewed = React.useCallback(() => {
+    const handleMarkAsViewed = React.useCallback(() => {
         const viewsRef = firebase.database().ref();
         firebase
             .database()
             .ref('views')
             .once('value')
             .then((snapshot) => {
-                console.log('WOW:', snapshot.val());
                 viewsRef.update({ views: snapshot.val() + 1 });
             });
     }, []);
 
     const handleTimeUpdate = React.useCallback(() => {
-        const minutes = Math.floor(player.current.currentTime / 60);
-        const seconds = Math.floor(player.current.currentTime - minutes * 60);
-        let minuteValue;
-        let secondValue;
-
-        if (minutes < 10) {
-            minuteValue = '0' + minutes;
-        } else {
-            minuteValue = minutes;
-        }
-
-        if (seconds < 10) {
-            secondValue = '0' + seconds;
-        } else {
-            secondValue = seconds;
-        }
-
-        let time = minuteValue + ':' + secondValue;
-
-        setTimeline({ currentTimr: time });
-    }, [player]);
+        setTimeline({ ...timeline, currentTime: player.current.currentTime });
+    }, [timeline, player]);
 
     const handleStop = React.useCallback(() => {
         player.current.pause();
@@ -106,14 +90,12 @@ export default function Player() {
     const handlePlayPause = React.useCallback(() => {
         if (isPlaying) {
             player.current.pause();
+        } else if (isForward) {
+            handleForward();
+        } else if (isRewind) {
+            handleRewind();
         } else {
-            if (isForward) {
-                handleForward();
-            } else if (isRewind) {
-                handleRewind();
-            } else {
-                player.current.play();
-            }
+            player.current.play();
         }
 
         setIsPlaying(!isPlaying);
@@ -164,7 +146,7 @@ export default function Player() {
     return (
         <div className={styles.player}>
             <Social />
-            <video ref={player} className={styles.video}>
+            <video preload="metadata" ref={player} className={styles.video}>
                 {/*Safari / iOS, IE9*/}
                 <source
                     src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"

@@ -11,7 +11,6 @@ export default function Controls({
     onStop,
     timeline,
 }) {
-    //Get the time from db
     return (
         <div className={styles.controls}>
             <Stop handleStop={onStop} />
