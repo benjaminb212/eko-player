@@ -1,4 +1,11 @@
 .votes {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     float: right;
+}
+
+.counter {
+    font-size: 14px;
+    color: white;
 }

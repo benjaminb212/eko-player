@@ -7,9 +7,9 @@ export default function PlayPause({ isPlaying, handlePlayPause }) {
     return (
         <img
             onClick={handlePlayPause}
-            className={!isPlaying && styles.play}
+            className={!isPlaying ? styles.play : null}
             src={isPlaying ? X : Triangle}
-            alt="Logo"
+            alt="PLAY/PAUSE"
         />
     );
 }

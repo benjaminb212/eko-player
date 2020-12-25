@@ -30,6 +30,14 @@ img {
         opacity: 1;
     }
 
+    &:focus {
+        outline: none;
+    }
+}
+
+.clap {
+    fill: white;
+
     &:active {
         fill: greenyellow;
     }
@@ -48,6 +56,13 @@ img {
     &:hover {
         opacity: 1;
     }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.boo {
     &:active {
         fill: red;
     }

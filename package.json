@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.0",
     "babel-plugin-named-asset-import": "^0.3.7",
@@ -31,6 +32,7 @@
     "firebase": "^8.2.1",
     "fs-extra": "^9.0.1",
     "identity-obj-proxy": "3.0.0",
+    "inquirer": "^7.3.3",
     "jest": "26.6.0",
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
@@ -60,11 +62,10 @@
     "workbox-webpack-plugin": "5.1.4"
   },
   "scripts": {
-    "build:dev": "webpack --mode=development NODE_ENV=development --config webpack.dev.js",
-    "build:prod": "webpack --mode=production NODE_ENV=production --config webpack.prod.js",
+    "build:dev": "webpack --mode=development --config webpack.dev.js",
+    "build:prod": "webpack --mode=production --config webpack.prod.js",
     "start": "node services/express.js",
     "watch": "webpack --watch",
-    "build": "webpack",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
@@ -91,9 +92,12 @@
     "@babel/preset-react": "^7.12.10",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^7.0.0",
     "css-loader": "^4.3.0",
     "file-loader": "^6.1.1",
+    "html-minimizer-webpack-plugin": "^2.0.0",
     "html-webpack-plugin": "^4.5.0",
+    "image-minimizer-webpack-plugin": "^2.1.0",
     "mini-css-extract-plugin": "^0.11.3",
     "postcss": "^8.2.1",
     "postcss-loader": "^3.0.0",

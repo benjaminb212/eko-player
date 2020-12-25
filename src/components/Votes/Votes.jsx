@@ -30,7 +30,7 @@ export default function Votes() {
     return (
         <div className={styles.votes}>
             <Like handleLike={handleLike} />
-            <span>{votes}</span>
+            <div className={styles.counter}>{votes}</div>
             <Dislike handleDislike={handleDislike} />
         </div>
     );

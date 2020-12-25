@@ -76,9 +76,10 @@ module.exports = {
     },
     resolve: {
         extensions: ['*', '.js', '.jsx', '.scss'],
+        // Aliasing common directories shorthands
         alias: {
-            assets: path.resolve(__dirname, 'src/assets/'),
             services: path.resolve(__dirname, 'services/'),
+            assets: path.resolve(__dirname, 'src/assets/'),
             components: path.resolve(__dirname, 'src/components/'),
             containers: path.resolve(__dirname, 'src/containers/'),
         },
@@ -94,14 +95,21 @@ module.exports = {
         }),
         new webpack.NamedChunksPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        // simplifies creation of HTML files to serve your webpack bundles.
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'public', 'index.html'),
             title: 'Development',
         }),
+        /**
+         * extracts CSS into separate files.
+         * creates a CSS file per JS file which contains CSS
+         * supports On-Demand-Loading of CSS and SourceMaps
+         *  */
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css',
         }),
+        // cleans build directory
         new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     ],
 };

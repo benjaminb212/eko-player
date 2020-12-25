@@ -1,14 +1,6 @@
 import React from 'react';
-import Square from 'assets/Square.png'
-import * as styles from './Buttons.scss';
+import Square from 'assets/Square.png';
 
 export default function Stop({ handleStop }) {
-    return (
-        <img
-        onClick={handleStop}
-        className={styles.stop}
-        src={Square}
-        alt="Logo"
-    />
-    );
+    return <img onClick={handleStop} src={Square} alt="STOP" />;
 }
