@@ -39,9 +39,9 @@ export default function Timeline({ currentTime, duration }) {
     }, [currentTime, duration]);
 
     return (
-        <div className={styles.timeline} ref={timelineRef}>
+        <div className={styles.progressBar} ref={timelineRef}>
             <div
-                className={styles.progress}
+                className={styles.progressBarInner}
                 style={{ width: progress.width + 'px' }}
             />
             <span className={styles.currentTime}>{progress.time}</span>

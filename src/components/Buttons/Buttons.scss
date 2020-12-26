@@ -1,19 +1,45 @@
-img {
-    position: relative;
-    border: 0;
-    width: 55px;
-    height: 55px;
+.stop {
+    width: 7%;
     opacity: 0.5;
+    margin: 0 1% 0 1%;
     transition: 0.6s all;
     cursor: pointer;
-
     &:hover {
         opacity: 1;
     }
 }
 
-.play {
-    transform: rotate(90deg);
+.play-pause {
+    width: 7%;
+    opacity: 0.5;
+    margin: 0 1% 0 1%;
+    transition: 0.6s all;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.fwd {
+    width: 8%;
+    opacity: 0.5;
+    margin: 0 1% 0 1%;
+    transition: 0.6s all;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.rwd {
+    width: 8%;
+    opacity: 0.5;
+    margin: 0 1% 0 1%;
+    transition: 0.6s all;
+    cursor: pointer;
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .like {

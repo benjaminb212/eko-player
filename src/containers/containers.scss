@@ -21,6 +21,6 @@
     position: absolute;
 }
 
-.container {
-    top: 50%;
+.hide {
+    opacity: 0; // hide Controls | Social if user mouse is of screen
 }

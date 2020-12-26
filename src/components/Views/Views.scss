@@ -7,12 +7,14 @@
     box-shadow: none;
     z-index: 1;
     opacity: 1;
+    fill: white;
     cursor: default;
 }
 
 .views {
     display: flex;
     float: left;
+    color: white;
 }
 
 .counter {

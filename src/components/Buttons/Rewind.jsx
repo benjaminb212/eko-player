@@ -1,6 +1,7 @@
 import React from 'react';
-import Circle from 'assets/Circle.png';
+import RewindIcon from 'assets/rewind.svg';
+import * as styles from './Buttons.scss';
 
 export default function Rewind({ handleRewind }) {
-    return <img onClick={handleRewind} src={Circle} alt="RWD" />;
+    return <RewindIcon onClick={handleRewind} className={styles.rwd} />;
 }

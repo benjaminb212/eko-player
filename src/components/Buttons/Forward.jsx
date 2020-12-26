@@ -1,6 +1,7 @@
 import React from 'react';
-import Circle from 'assets/Circle.png';
+import ForwardIcon from 'assets/forward.svg';
+import * as styles from './Buttons.scss';
 
 export default function Forward({ handleForward }) {
-    return <img onClick={handleForward} src={Circle} alt="FWD" />;
+    return <ForwardIcon onClick={handleForward} className={styles.fwd} />;
 }

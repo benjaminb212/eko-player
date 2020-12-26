@@ -1,5 +1,5 @@
 import React from 'react';
-import Unlike from 'assets/Unlike.svg';
+import Unlike from 'assets/unlike.svg';
 import * as styles from './Buttons.scss';
 
 export default function Dislike({ handleDislike }) {
