@@ -11,6 +11,10 @@ This is a demo application of a media player that have the following functionali
 
 This app is built with [React](https://reactjs.org/) & [Firebase Realtime Database](https://react-firebase-js.com/docs/react-firebase-realtime-database/getting-started).
 
+### `npm i`
+
+Before runing any scripts, use `npm` to install all required dependencies to run the app.
+
 ## Available Scripts
 
 In the project directory, you can run:
