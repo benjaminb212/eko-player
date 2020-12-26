@@ -5,6 +5,8 @@ import firebase from 'services/firebase';
 import * as styles from './containers.scss';
 
 export default function Player() {
+    const [controls, setControls] = React.useState(true);
+    const [isWaiting, setIsWaiting] = React.useState(false);
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [isForward, setIsForward] = React.useState(false);
     const [isRewind, setIsRewind] = React.useState(false);
@@ -25,6 +27,12 @@ export default function Player() {
         player.current.addEventListener('ended', handleStop);
         // Mark the video as viewed when ended
         player.current.addEventListener('ended', handleMarkAsViewed);
+        // Handling lack of data
+        player.current.addEventListener('waiting', handleWaiting);
+        // Hide player controls 3 sec after the video starts
+        player.current.addEventListener('play', handlePlay);
+        // Show player controls if client mouse in video element range
+        document.addEventListener('mousemove', handleMouseMove);
     }, [
         player,
         handleLoadedMetaData,
@@ -33,12 +41,38 @@ export default function Player() {
         handleMarkAsViewed,
     ]);
 
+    const handleMouseMove = React.useCallback(({ clientX, clientY }) => {
+        // Check if client's mouse is in viedo element range
+        if (
+            player.current.clientWidth - clientX > 0 &&
+            player.current.clientHeight - clientY > 0
+        ) {
+            setControls(true);
+        } else {
+            setControls(false);
+        }
+    }, []);
+
+    const handleWaiting = React.useCallback(() => {
+        setIsWaiting(true);
+    });
+
+    const handlePlay = React.useCallback(() => {
+        function hideControls() {
+            setControls(false);
+        }
+
+        // Hide player controls 3 sec after the video starts
+        setTimeout(hideControls, 3000);
+    });
+
     // Handling current video timer & duration properties
     const handleLoadedMetaData = React.useCallback(() => {
         setTimeline({
             currentTime: player.current.currentTime,
             duration: player.current.duration,
         });
+        setIsWaiting(false);
     }, [player]);
 
     // A video considered as viewed if a user has ended the video to its end
@@ -143,9 +177,11 @@ export default function Player() {
         }
     }, [isForward, forward]);
 
+    if (isWaiting) return <div className={styles.player}>Loading...</div>;
+
     return (
         <div className={styles.player}>
-            <Social />
+            {controls ? <Social /> : null}
             <video preload="metadata" ref={player} className={styles.video}>
                 {/*Safari / iOS, IE9*/}
                 <source
@@ -163,15 +199,17 @@ export default function Player() {
                     type="video/ogg"
                 />
             </video>
-            <Controls
-                isPlaying={isPlaying}
-                timeline={timeline}
-                onStop={handleStop}
-                onPlayPause={handlePlayPause}
-                onForward={handleForward}
-                onChangeTimeline={handleChangeTimeline}
-                onRewind={handleRewind}
-            />
+            {controls ? (
+                <Controls
+                    isPlaying={isPlaying}
+                    timeline={timeline}
+                    onStop={handleStop}
+                    onPlayPause={handlePlayPause}
+                    onForward={handleForward}
+                    onChangeTimeline={handleChangeTimeline}
+                    onRewind={handleRewind}
+                />
+            ) : null}
         </div>
     );
 }
