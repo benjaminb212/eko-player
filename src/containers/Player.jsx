@@ -5,7 +5,8 @@ import firebase from 'services/firebase';
 import * as styles from './containers.scss';
 
 export default function Player() {
-    const [controls, setControls] = React.useState(true);
+    // isVisibilityActive flag is used to show/hide controls
+    const [isVisibilityActive, setIsVisibilityActive] = React.useState(true);
     const [isWaiting, setIsWaiting] = React.useState(false);
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [isForward, setIsForward] = React.useState(false);
@@ -19,26 +20,44 @@ export default function Player() {
     const intervalRwd = React.useRef();
 
     React.useEffect(() => {
+        // The ref value 'player.current' will likely have changed by the time this effect cleanup function runs.
+        const playerElement = player.current;
         // Loading video metadata
-        player.current.addEventListener('loadedmetadata', handleLoadedMetaData);
+        playerElement.addEventListener('loadedmetadata', handleLoadedMetaData);
         // Handling time elapsed
-        player.current.addEventListener('timeupdate', handleTimeUpdate);
+        playerElement.addEventListener('timeupdate', handleTimeUpdate);
         // Reset the video when ended
-        player.current.addEventListener('ended', handleStop);
+        playerElement.addEventListener('ended', handleStop);
         // Mark the video as viewed when ended
-        player.current.addEventListener('ended', handleMarkAsViewed);
+        playerElement.addEventListener('ended', handleMarkAsViewed);
         // Handling lack of data
-        player.current.addEventListener('waiting', handleWaiting);
+        playerElement.addEventListener('waiting', handleWaiting);
         // Hide player controls 3 sec after the video starts
-        player.current.addEventListener('play', handlePlay);
+        playerElement.addEventListener('play', handlePlay);
         // Show player controls if client mouse in video element range
         document.addEventListener('mousemove', handleMouseMove);
+
+        return () => {
+            playerElement.removeEventListener(
+                'loadedmetadata',
+                handleLoadedMetaData
+            );
+            playerElement.removeEventListener('timeupdate', handleTimeUpdate);
+            playerElement.removeEventListener('ended', handleStop);
+            playerElement.removeEventListener('ended', handleMarkAsViewed);
+            playerElement.removeEventListener('waiting', handleWaiting);
+            playerElement.removeEventListener('play', handlePlay);
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
     }, [
         player,
         handleLoadedMetaData,
         handleStop,
         handleTimeUpdate,
         handleMarkAsViewed,
+        handleWaiting,
+        handlePlay,
+        handleMouseMove,
     ]);
 
     const handleMouseMove = React.useCallback(({ clientX, clientY }) => {
@@ -47,24 +66,24 @@ export default function Player() {
             player.current.clientWidth - clientX > 0 &&
             player.current.clientHeight - clientY > 0
         ) {
-            setControls(true);
+            setIsVisibilityActive(true);
         } else {
-            setControls(false);
+            setIsVisibilityActive(false);
         }
     }, []);
 
     const handleWaiting = React.useCallback(() => {
         setIsWaiting(true);
-    });
+    }, []);
 
     const handlePlay = React.useCallback(() => {
         function hideControls() {
-            setControls(false);
+            setIsVisibilityActive(false);
         }
 
         // Hide player controls 3 sec after the video starts
         setTimeout(hideControls, 3000);
-    });
+    }, []);
 
     // Handling current video timer & duration properties
     const handleLoadedMetaData = React.useCallback(() => {
@@ -85,6 +104,11 @@ export default function Player() {
             .then((snapshot) => {
                 viewsRef.update({ views: snapshot.val() + 1 });
             });
+
+        // Handling the cleanup of subscribed getViews handler in firebase.
+        return () => {
+            viewsRef();
+        };
     }, []);
 
     const handleTimeUpdate = React.useCallback(() => {
@@ -92,14 +116,17 @@ export default function Player() {
     }, [timeline, player]);
 
     const handleStop = React.useCallback(() => {
+        if (isRewind) {
+            handleRewind();
+        }
+
+        if (isForward) {
+            handleForward();
+        }
         player.current.pause();
         player.current.currentTime = 0;
         setIsPlaying(false);
-        setIsRewind(false);
-        setIsForward(false);
-        clearInterval(intervalRwd);
-        clearInterval(intervalFwd);
-    }, [player]);
+    }, [player, isRewind, handleRewind, isForward, handleForward]);
 
     const rewind = React.useCallback(() => {
         if (player.current.currentTime <= 3) {
@@ -124,6 +151,7 @@ export default function Player() {
     const handlePlayPause = React.useCallback(() => {
         if (isPlaying) {
             player.current.pause();
+            setIsPlaying(false);
         } else if (isForward) {
             handleForward();
         } else if (isRewind) {
@@ -146,42 +174,44 @@ export default function Player() {
     );
 
     const handleRewind = React.useCallback(() => {
-        clearInterval(intervalFwd.current);
-        setIsForward(false);
+        setIsPlaying(false);
+        if (isForward) {
+            clearInterval(intervalFwd.current);
+            setIsForward(false);
+        }
         if (isRewind) {
             clearInterval(intervalRwd.current);
             setIsRewind(false);
-            player.current.play();
-            setIsPlaying(true);
         } else {
             setIsRewind(true);
             player.current.pause();
             setIsPlaying(false);
             intervalRwd.current = setInterval(rewind, 200);
         }
-    }, [isRewind, rewind]);
+    }, [isRewind, rewind, isForward]);
 
     const handleForward = React.useCallback(() => {
-        clearInterval(intervalRwd.current);
-        setIsRewind(false);
+        setIsPlaying(false);
+        if (isRewind) {
+            clearInterval(intervalRwd.current);
+            setIsRewind(false);
+        }
         if (isForward) {
             clearInterval(intervalFwd.current);
             setIsForward(false);
-            player.current.play();
-            setIsPlaying(true);
         } else {
             setIsForward(true);
             player.current.pause();
             setIsPlaying(false);
             intervalFwd.current = setInterval(forward, 200);
         }
-    }, [isForward, forward]);
+    }, [isForward, forward, isRewind]);
 
     if (isWaiting) return <div className={styles.player}>Loading...</div>;
 
     return (
         <div className={styles.player}>
-            {controls ? <Social /> : null}
+            <Social isVisibilityActive={isVisibilityActive} />
             <video preload="metadata" ref={player} className={styles.video}>
                 {/*Safari / iOS, IE9*/}
                 <source
@@ -199,9 +229,10 @@ export default function Player() {
                     type="video/ogg"
                 />
             </video>
-            {controls ? (
+
+            {isVisibilityActive ? (
                 <Controls
-                    isPlaying={isPlaying}
+                    isPlayback={isPlaying || isForward || isRewind}
                     timeline={timeline}
                     onStop={handleStop}
                     onPlayPause={handlePlayPause}

@@ -4,14 +4,21 @@ import firebase from 'services/firebase';
 import * as styles from './Votes.scss';
 
 // A video votes are measured by users "claps" or "boos"
-export default function Votes() {
+export default function Votes({ isVisibilityActive }) {
     const [votes, setVotes] = React.useState([]);
 
     React.useEffect(() => {
         const votesRef = firebase.database().ref('votes');
-        votesRef.on('value', (snapshot) => {
+
+        const getVotes = (snapshot) => {
             setVotes(snapshot.val());
-        });
+        };
+        votesRef.on('value', getVotes);
+
+        // Handling the cleanup of subscribed getVotes handler in firebase.
+        // return () => {
+        //     getVotes();
+        // };
     }, []);
 
     const handleLike = React.useCallback(() => {
@@ -28,7 +35,10 @@ export default function Votes() {
     }, [votes]);
 
     return (
-        <div className={styles.votes}>
+        <div
+            className={styles.votes}
+            style={{ visibility: isVisibilityActive ? 'visible' : 'hidden' }}
+        >
             <Like handleLike={handleLike} />
             <div className={styles.counter}>{votes}</div>
             <Dislike handleDislike={handleDislike} />

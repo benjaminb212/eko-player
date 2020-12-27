@@ -3,7 +3,7 @@ import { Timeline, Stop, Forward, Rewind, PlayPause } from '../components';
 import * as styles from './containers.scss';
 
 export default function Controls({
-    isPlaying,
+    isPlayback,
     onPlayPause,
     onForward,
     onChangeTimeline,
@@ -14,7 +14,7 @@ export default function Controls({
     return (
         <div className={styles.controls}>
             <Stop handleStop={onStop} />
-            <PlayPause isPlaying={isPlaying} handlePlayPause={onPlayPause} />
+            <PlayPause isPlayback={isPlayback} handlePlayPause={onPlayPause} />
             <Timeline
                 currentTime={timeline.currentTime}
                 duration={timeline.duration}
